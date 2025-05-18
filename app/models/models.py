@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Field
 
 
@@ -8,6 +10,16 @@ class Example(BaseModel):
 class Message(BaseModel):
     messageId: int = Field(title="Message ID", examples=[1])
     example: Example = Field(title="Example Model inheriting another model")
+
+
+class DynamoDBKeySchema(BaseModel):
+    UUID: dict = Field(default={"S": "UUID"})
+    DateReceived: dict = Field(default={"S": "DateReceived"})
+
+
+class InsertData(BaseModel):
+    UUID: str = Field(description="Universally Unique Identifier")
+    DateReceived: datetime = Field(description="Date", default=datetime.now())
 
 
 class Package(BaseModel):
