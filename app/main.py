@@ -1,8 +1,9 @@
 import uvicorn
 from fastapi import FastAPI, status
+from mangum import Mangum
 
 from app.internal import versions
-from app.routers import demo
+from app.routers import crud
 
 # Provide meta data for API.
 # https://fastapi.tiangolo.com/tutorial/metadata/#metadata-for-api
@@ -19,7 +20,7 @@ app = FastAPI(
         "url": "https://choosealicense.com/",
     },
 )
-app.include_router(demo.router)
+app.include_router(crud.router)
 app.include_router(versions.router)
 
 
@@ -32,5 +33,8 @@ async def root() -> dict:
     return {"message": "What a wonderful kind of day."}
 
 
+handler = Mangum(app)
+
 if __name__ == "__main__":
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000)
+    # Helpful for when running locally.
+    uvicorn.run(app="app.main:app", host="0.0.0.0", port=8000)
