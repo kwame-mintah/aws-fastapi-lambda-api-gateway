@@ -10,7 +10,7 @@ router = APIRouter(prefix="/version", tags=["versions"])
 
 
 @router.get(
-    "/python",
+    path="/python",
     operation_id="pythonVersion",
     summary="Python version installed",
     response_model=Package,
@@ -25,7 +25,7 @@ async def python_version() -> Package:
 
 
 @router.get(
-    "/fastapi",
+    path="/fastapi",
     operation_id="fastapiVersion",
     summary="FastAPI version installed",
     response_model=Package,
