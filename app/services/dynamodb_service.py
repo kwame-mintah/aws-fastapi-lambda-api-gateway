@@ -76,6 +76,8 @@ class AWSDynamoDBService:
                     "DateReceived": {"S": str(data.DateReceived)},
                     "UUID": {"S": data.UUID},
                 },
+                # TODO: Update Expression(s) so only an existing UUID is updated and create a new item because it doesn't exist.
+                # "Edits an existing item’s attributes, or adds a new item to the table if it does not already exist."
                 UpdateExpression="set Message = :r",
                 ExpressionAttributeValues={":r": {"S": str(data.Message)}},
                 ConditionExpression="attribute_exists(Message) OR Message <> :r",
