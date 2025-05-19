@@ -1,9 +1,10 @@
+from datetime import datetime
 from typing import List
 
 from fastapi import APIRouter, Depends, status
 
 from app.dependencies import get_database_service
-from app.models.models import Message, InsertData
+from app.models.models import InsertData
 from app.services.dynamodb_service import AWSDynamoDBService
 
 router = APIRouter(prefix="/dynamodb", tags=["dynamodb"])
@@ -12,7 +13,7 @@ router = APIRouter(prefix="/dynamodb", tags=["dynamodb"])
 @router.get(
     path="",
     operation_id="ddbGetItem",
-    summary="Gets all data from the table.",
+    summary="Demonstrating getting data from the table.",
     response_model=List[dict],
     status_code=status.HTTP_200_OK,
 )
@@ -20,9 +21,9 @@ async def get_data(
     service: AWSDynamoDBService = Depends(get_database_service),
 ) -> List[dict]:
     """
-    The operation returns a set of attributes for the item with the given primary key.
-    :param service:
-    :return: Message
+    The operation returns a set of attributes for the item with the given key(s).
+    :param service: AWSDynamoDBService
+    :return: List of items.
     """
     return service.get_all_items()
 
@@ -30,7 +31,7 @@ async def get_data(
 @router.post(
     path="",
     operation_id="ddbPutItem",
-    summary="Adds a data to the table.",
+    summary="Demonstrating adding data to the table.",
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def add_data(
@@ -38,49 +39,49 @@ async def add_data(
     service: AWSDynamoDBService = Depends(get_database_service),
 ) -> None:
     """
-    An example `POST` endpoint to return a response
-    :param service:
-    :return: List of Messages stored
+    Add data to the table.
+    :param data:
+    :param service: AWSDynamoDBService
     """
     return service.add_data(data=data)
 
 
 @router.put(
-    path="/{message_id}",
+    path="",
     operation_id="ddbUpdateItem",
-    summary="Adds a data to the table.",
-    response_model=List[Message],
+    summary="Demonstrating updating data in the table.",
     status_code=status.HTTP_200_OK,
 )
 async def update_data(
-    message: Message,
+    data: InsertData,
     service: AWSDynamoDBService = Depends(get_database_service),
-) -> List[Message]:
+) -> dict:
     """
-    An example `POST` endpoint to return a response
-    :param message:
-    :param service:
-    :return: List of Messages stored
+    Update an existing item using key(s) and return only updated
+    attributes.
+    :param data:
+    :param service: AWSDynamoDBService
+    :return: Updated attributes.
     """
-    return service.update_data()
+    return service.update_data(data=data)
 
 
 @router.delete(
-    path="/{message_id}",
-    operation_id="deleteDemoRoot",
-    summary="Demonstrating DEL Request",
+    path="/{uuid}/{date_received}",
+    operation_id="ddbDelete_item",
+    summary="Demonstrating deleting data.",
     response_model=None,
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def demo_delete(
-    message_id: int,
+    uuid: str,
+    date_received: datetime,
     service: AWSDynamoDBService = Depends(get_database_service),
 ) -> None:
     """
-    An example `DELETE` endpoint to remove a message from
-    stub data
-    :param message_id: The `messageId` to delete
-    :param service: DemoService
-    :return: successfully processed the request
+    Delete an item from the table.
+    :param uuid:
+    :param date_received:
+    :param service: AWSDynamoDBService
     """
-    return service.delete_data()
+    return service.delete_data(uuid=uuid, date_received=date_received)
