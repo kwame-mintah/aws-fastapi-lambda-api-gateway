@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from pydantic import BaseModel, Field
@@ -18,8 +19,11 @@ class DynamoDBKeySchema(BaseModel):
 
 
 class InsertData(BaseModel):
-    UUID: str = Field(description="Universally Unique Identifier")
-    DateReceived: datetime = Field(description="Date", default=datetime.now())
+    UUID: str = Field(
+        default=str(uuid.uuid4()), description="Universally Unique Identifier"
+    )
+    DateReceived: datetime = Field(default=datetime.now(), description="Date")
+    Message: str = Field(description="Content of the message")
 
 
 class Package(BaseModel):
