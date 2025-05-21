@@ -11,7 +11,9 @@ COPY ./requirements.txt /code/requirements.txt
 
 # Install all python modules, keep image as small as possible
 # don't store the cache directory during install
-RUN pip install --no-build-isolation --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install wheel && \
+    pip install --no-build-isolation "Cython<3" "pyyaml==5.4.1" && \
+    pip install --no-build-isolation --no-cache-dir --upgrade -r /code/requirements.txt
 
 # Copy application code to `/code/app/`
 COPY . /code
