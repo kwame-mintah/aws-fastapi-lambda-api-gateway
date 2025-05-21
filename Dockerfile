@@ -18,9 +18,12 @@ RUN pip install wheel && \
 # Copy application code to `/code/app/`
 COPY . /code
 
+# Ensure Python can locate the app module inside /code.
+ENV PYTHONPATH="/code:${PYTHONPATH}"
+
 # Don't run application as root, instead user called `nobody`
 RUN chown -R nobody /code
 
 USER nobody
 
-CMD ["main.handler"]
+CMD ["app.main.handler"]
