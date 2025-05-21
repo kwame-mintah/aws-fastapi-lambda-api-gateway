@@ -1,5 +1,6 @@
 ARG BUILD_PLATFORM=linux/amd64
-ARG BASE_IMAGE=python:3.11.6-slim-bullseye
+# Use python3.11 at the same release date as python3.11.6?
+ARG BASE_IMAGE=public.ecr.aws/lambda/python:3.11.2023.08.02.09
 FROM --platform=${BUILD_PLATFORM} ${BASE_IMAGE}
 
 # Set working directory as `/code/`
@@ -20,5 +21,4 @@ RUN chown -R nobody /code
 
 USER nobody
 
-# Start fastapi application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["app.main.handler"]
