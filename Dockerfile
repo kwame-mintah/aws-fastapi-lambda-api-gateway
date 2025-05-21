@@ -23,4 +23,4 @@ RUN chown -R nobody /code
 
 USER nobody
 
-CMD ["app.main.handler"]
+CMD ["main.handler"]
