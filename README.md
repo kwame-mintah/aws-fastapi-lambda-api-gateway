@@ -1,23 +1,20 @@
-# Python FastAPI Bigger Applications Template
+# AWS FastAPI Lambda API Gateway
 
 ![python](https://img.shields.io/badge/python-3.11.6-informational)
-![fastapi-0.115.0-informational](https://img.shields.io/badge/fastapi-0.115.0-informational)
-<a href="https://github.com/new?template_name=python-fastapi-bigger-applications-template&template_owner=kwame-mintah">
-<img src="https://img.shields.io/badge/use%20this-template-blue?logo=github">
-</a>
+![fastapi-0.115.12-informational](https://img.shields.io/badge/fastapi-0.115.12-informational)
 
-This a template project, to demonstrate using FastAPI in a bigger application. The same file structure
-has been followed as per FastAPI [docs](https://fastapi.tiangolo.com/tutorial/bigger-applications/).
+This is a FastAPI application to be deployed as an [Amazon Web Services (AWS) Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) function, triggered
+via [AWS API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html). This project is to be
+built and deployed using [AWS CodePipeline](https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html).
 
-This repository is intended as a quick-start and includes the following:
+For demonstration purposes, a simple Create Read Update Delete (CRUD) REST API has been created to perform actions against
+an [AWS DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html), the deployed lambda function
+IAM Role will need additional permissions when calling the operations defined.
 
-- A [`Dockerfile`](/Dockerfile) to build the FastAPI application
-  following [guidelines](https://docs.docker.com/develop/develop-images/guidelines/) and [Distroless variant](/Dockerfile.distroless),
-- A `docker-compose.yml` file to build and start the application,
-- GitHub Action workflow to run linting and unit tests,
-- Pre-commit hooks to run on each commit,
-- Pydantic models as response models for endpoints,
-- Unit and integration feature tests for endpoints.
+![example-diagram-aws-console](/docs/aws-lambda-function-overview.png)
+
+The underlying infrastructure needed can be found within my Terraform [terraform-aws-certified-devops-engineer-professional](https://github.com/kwame-mintah/terraform-aws-certified-devops-engineer-professional),
+alongside CloudFormation templates used to create other resources within my [aws-cloudformation-playground](https://github.com/kwame-mintah/aws-cloudformation-playground).
 
 ## Usage
 
@@ -40,12 +37,17 @@ Endpoint documentation are available on http://127.0.0.1:8000/docs
 
 ## Docker
 
-Running the `docker-compose.yml`, will build a new image python-fastapi-bigger-applications-template-fastapi:latest
+Running the `docker-compose.yml`, will build a new image aws-fastapi-lambda-api-gateway-fastapi:latest
 which will be used for the `fastapi` service within the container.
 
 ```console
 docker-compose up -d
 ```
+
+![NOTE]
+> Running the project via docker compose will on launch the lambda and is not the same as running the
+> application via uvicorn. Will need to invoke the lambda by make a post request to the following URL:
+> `curl "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{REPLACE_WITH_EVENT_HERE}'`
 
 ## Tests
 
