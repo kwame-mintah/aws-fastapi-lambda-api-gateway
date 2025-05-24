@@ -1,0 +1,3 @@
+[submodule "cfn-templates"]
+	path = cfn-templates
+	url = https://github.com/kwame-mintah/aws-cloudformation-playground.git
