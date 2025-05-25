@@ -44,7 +44,7 @@ which will be used for the `fastapi` service within the container.
 docker-compose up -d
 ```
 
-![NOTE]
+> [!NOTE]
 > Running the project via docker compose will on launch the lambda and is not the same as running the
 > application via uvicorn. Will need to invoke the lambda by make a post request to the following URL:
 > `curl "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{REPLACE_WITH_EVENT_HERE}'`
