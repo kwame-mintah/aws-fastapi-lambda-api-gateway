@@ -14,12 +14,12 @@ class Message(BaseModel):
 
 
 class DynamoDBKeySchema(BaseModel):
-    UUID: dict = Field(default={"S": "UUID"})
+    GUID: dict = Field(default={"S": "GUID"})
     DateReceived: dict = Field(default={"S": "DateReceived"})
 
 
 class InsertData(BaseModel):
-    UUID: str = Field(
+    GUID: str = Field(
         default=str(uuid.uuid4()), description="Universally Unique Identifier"
     )
     DateReceived: datetime = Field(default=datetime.now(), description="Date")

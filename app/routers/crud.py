@@ -67,21 +67,21 @@ async def update_data(
 
 
 @router.delete(
-    path="/{uuid}/{date_received}",
+    path="/{guid}/{date_received}",
     operation_id="ddbDelete_item",
     summary="Demonstrating deleting data.",
     response_model=None,
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def demo_delete(
-    uuid: str,
+    guid: str,
     date_received: datetime,
     service: AWSDynamoDBService = Depends(get_database_service),
 ) -> None:
     """
     Delete an item from the table.
-    :param uuid:
+    :param guid:
     :param date_received:
     :param service: AWSDynamoDBService
     """
-    return service.delete_data(uuid=uuid, date_received=date_received)
+    return service.delete_data(guid=guid, date_received=date_received)

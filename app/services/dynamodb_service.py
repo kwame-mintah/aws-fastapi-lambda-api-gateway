@@ -38,7 +38,7 @@ class AWSDynamoDBService:
                 TableName=self.table,
                 Item={
                     "DateReceived": {"S": str(data.DateReceived)},
-                    "UUID": {"S": data.UUID},
+                    "GUID": {"S": data.GUID},
                     "Message": {"S": data.Message},
                 },
             )
@@ -74,9 +74,9 @@ class AWSDynamoDBService:
                 TableName=self.table,
                 Key={
                     "DateReceived": {"S": str(data.DateReceived)},
-                    "UUID": {"S": data.UUID},
+                    "GUID": {"S": data.GUID},
                 },
-                # TODO: Update Expression(s) so only an existing UUID is updated and create a new item because it doesn't exist.
+                # TODO: Update Expression(s) so only an existing GUID is updated and create a new item because it doesn't exist.
                 # "Edits an existing item’s attributes, or adds a new item to the table if it does not already exist."
                 UpdateExpression="set Message = :r",
                 ExpressionAttributeValues={":r": {"S": str(data.Message)}},
@@ -91,10 +91,10 @@ class AWSDynamoDBService:
         else:
             return response["Attributes"]
 
-    def delete_data(self, uuid: str, date_received: datetime):
+    def delete_data(self, guid: str, date_received: datetime):
         """
         Delete an item from the table.
-        :param uuid:
+        :param guid:
         :param date_received:
         """
         try:
@@ -102,7 +102,7 @@ class AWSDynamoDBService:
                 TableName=self.table,
                 Key={
                     "DateReceived": {"S": str(date_received)},
-                    "UUID": {"S": uuid},
+                    "GUID": {"S": guid},
                 },
             )
         except ClientError as exception:
